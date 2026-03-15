@@ -8,7 +8,9 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.app.Person
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.IconCompat
 import com.mmk.kmpnotifier.Constants.ACTION_NOTIFICATION_CLICK
 import com.mmk.kmpnotifier.extensions.notificationManager
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
@@ -91,6 +93,60 @@ internal class AndroidNotifier(
         }
 
 
+    }
+
+    internal fun showConversationNotification(
+        chatId: String,
+        senderName: String,
+        senderAvatarUrl: String,
+        chatName: String,
+        isGroup: Boolean,
+        body: String,
+        payloadData: Map<String, String>,
+    ) {
+        val notificationId = chatId.hashCode()
+        val notificationManager = context.notificationManager ?: return
+        val pendingIntent = getPendingIntent(payloadData, notificationId)
+        notificationChannelFactory.createChannels()
+        scope.launch {
+            val avatarBitmap = if (senderAvatarUrl.isNotEmpty())
+                NotificationImage.Url(senderAvatarUrl).asBitmap()
+            else
+                null
+
+            val senderIcon = avatarBitmap?.let { IconCompat.createWithBitmap(it) }
+            val senderPerson = Person.Builder()
+                .setName(senderName)
+                .apply { senderIcon?.let { setIcon(it) } }
+                .build()
+            val mePerson = Person.Builder().setName("Me").build()
+
+            val existingStyle = notificationManager.activeNotifications
+                ?.firstOrNull { it.id == notificationId }
+                ?.notification
+                ?.let { NotificationCompat.MessagingStyle.extractMessagingStyleFromNotification(it) }
+
+            val style = (existingStyle ?: NotificationCompat.MessagingStyle(mePerson)
+                .setConversationTitle(if (chatName.isNotEmpty()) chatName else null)
+                .setGroupConversation(isGroup))
+                .addMessage(body, System.currentTimeMillis(), senderPerson)
+
+            val notification = NotificationCompat.Builder(
+                context,
+                androidNotificationConfiguration.notificationChannelData.id
+            ).apply {
+                setChannelId(androidNotificationConfiguration.notificationChannelData.id)
+                setSmallIcon(androidNotificationConfiguration.notificationIconResId)
+                setAutoCancel(true)
+                setContentIntent(pendingIntent)
+                setStyle(style)
+                setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                androidNotificationConfiguration.notificationIconColorResId?.let {
+                    color = ContextCompat.getColor(context, it)
+                }
+            }.build()
+            notificationManager.notify(notificationId, notification)
+        }
     }
 
     override fun remove(id: Int) {
