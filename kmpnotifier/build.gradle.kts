@@ -6,7 +6,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinNativeCocoaPods)
     alias(libs.plugins.mavenPublish)
 }
 
@@ -30,22 +29,13 @@ kotlin {
     }
 
     jvm()
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
 
-
-    cocoapods {
-        ios.deploymentTarget = "15.4"
-        framework {
+    listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach {
+        it.binaries.framework {
             baseName = "KMPNotifier"
             isStatic = true
         }
-        noPodspec()
-        pod("FirebaseMessaging")
     }
-
-
 
     sourceSets {
 

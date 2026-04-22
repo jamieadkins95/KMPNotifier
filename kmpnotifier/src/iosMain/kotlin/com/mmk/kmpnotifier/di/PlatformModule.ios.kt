@@ -1,9 +1,7 @@
 package com.mmk.kmpnotifier.di
 
-import com.mmk.kmpnotifier.firebase.FirebasePushNotifierImpl
 import com.mmk.kmpnotifier.notification.IosNotifier
 import com.mmk.kmpnotifier.notification.Notifier
-import com.mmk.kmpnotifier.notification.PushNotifier
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
 import com.mmk.kmpnotifier.permission.IosPermissionUtil
 import com.mmk.kmpnotifier.permission.PermissionUtil
@@ -24,10 +22,4 @@ internal actual val platformModule = module {
             iosNotificationConfiguration = configuration
         )
     } bind Notifier::class
-
-    factory {
-        FirebasePushNotifierImpl()
-    } bind PushNotifier::class
-
-
 }
