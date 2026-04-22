@@ -53,7 +53,7 @@ kotlin {
             implementation(libs.androidx.startup.runtime)
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.activity.ktx)
-            implementation(libs.firebase.messaging)
+            api(libs.firebase.messaging)
 
         }
         commonMain.dependencies {

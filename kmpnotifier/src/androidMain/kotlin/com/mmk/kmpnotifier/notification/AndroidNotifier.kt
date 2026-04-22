@@ -24,7 +24,7 @@ import kotlin.coroutines.cancellation.CancellationException
 import kotlin.random.Random
 
 
-internal class AndroidNotifier(
+public class AndroidNotifier internal constructor(
     private val context: Context,
     private val androidNotificationConfiguration: NotificationPlatformConfiguration.Android,
     private val notificationChannelFactory: NotificationChannelFactory,
@@ -95,7 +95,7 @@ internal class AndroidNotifier(
 
     }
 
-    internal fun showConversationNotification(
+    public fun showConversationNotification(
         chatId: String,
         senderName: String,
         senderAvatarUrl: String,

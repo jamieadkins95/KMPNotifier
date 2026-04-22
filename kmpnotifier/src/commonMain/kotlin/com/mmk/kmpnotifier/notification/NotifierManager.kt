@@ -111,4 +111,20 @@ public object NotifierManager {
     public fun setLogger(logger: Logger) {
         NotifierManagerImpl.setLogger(logger)
     }
+
+    public fun onNewToken(token: String) {
+        NotifierManagerImpl.onNewToken(token)
+    }
+
+    public fun onPushPayloadData(data: PayloadData) {
+        NotifierManagerImpl.onPushPayloadData(data)
+    }
+
+    public fun onPushNotification(title: String?, body: String?) {
+        NotifierManagerImpl.onPushNotification(title, body)
+    }
+
+    public fun onPushNotificationWithPayloadData(title: String?, body: String?, data: PayloadData) {
+        NotifierManagerImpl.onPushNotificationWithPayloadData(title, body, data)
+    }
 }
