@@ -1,9 +1,9 @@
 package com.mmk.kmpnotifier.firebase
 
-import com.google.firebase.messaging.FirebaseMessaging
 import com.mmk.kmpnotifier.logger.currentLogger
 import com.mmk.kmpnotifier.notification.PushNotifier
-import kotlinx.coroutines.tasks.asDeferred
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.messaging.messaging
 import kotlin.coroutines.cancellation.CancellationException
 
 internal class FirebasePushNotifierImpl : PushNotifier {
@@ -14,7 +14,7 @@ internal class FirebasePushNotifierImpl : PushNotifier {
 
     override suspend fun getToken(): String? {
         return try {
-            return FirebaseMessaging.getInstance().token.asDeferred().await()
+            return Firebase.messaging.getToken()
         } catch (e: Exception) {
             if (e is CancellationException) throw e
             null.also {
@@ -24,16 +24,15 @@ internal class FirebasePushNotifierImpl : PushNotifier {
     }
 
     override suspend fun deleteMyToken() {
-        FirebaseMessaging.getInstance().deleteToken()
+        Firebase.messaging.deleteToken()
     }
 
     override suspend fun subscribeToTopic(topic: String) {
-        FirebaseMessaging.getInstance().subscribeToTopic(topic)
+        Firebase.messaging.subscribeToTopic(topic)
     }
 
     override suspend fun unSubscribeFromTopic(topic: String) {
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic)
+        Firebase.messaging.unsubscribeFromTopic(topic)
     }
-
 
 }

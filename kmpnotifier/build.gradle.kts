@@ -44,7 +44,9 @@ kotlin {
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.activity.ktx)
             api(libs.firebase.messaging)
-
+        }
+        iosMain.dependencies {
+            api(libs.firebase.messaging)
         }
         commonMain.dependencies {
             implementation(libs.koin.core)
