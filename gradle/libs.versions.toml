@@ -33,6 +33,7 @@ androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref
 androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "androidx-startup-runtime" }
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 firebase-messaging = { module = "dev.gitlive:firebase-messaging" ,version.ref="firebase-messaging"}
+firebase-bom = { module = "com.google.firebase:firebase-bom", version = "33.15.0" }
 
 
 [plugins]

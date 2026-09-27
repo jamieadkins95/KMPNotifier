@@ -40,6 +40,7 @@ kotlin {
     sourceSets {
 
         androidMain.dependencies {
+            implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.androidx.startup.runtime)
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.activity.ktx)
